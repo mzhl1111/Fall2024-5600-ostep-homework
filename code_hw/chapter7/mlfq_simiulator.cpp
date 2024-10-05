@@ -7,11 +7,11 @@
 using namespace std;
 
 #define RESET   "\033[0m"
-#define DEMOTE     "\033[31m"      
-#define ARRIVE   "\033[32m"      
-#define BOOST  "\033[33m"      
-#define RUN    "\033[34m"      
-#define END "\033[35m"          
+#define DEMOTE  "\033[31m"      
+#define ARRIVE  "\033[32m"      
+#define BOOST   "\033[33m"      
+#define RUN     "\033[34m"      
+#define END     "\033[35m"          
 
 
 struct Process {
@@ -29,10 +29,10 @@ bool arrivalTimeComparator(const Process& a, const Process& b) {
 }
 
 int main() {
-    const int NUM_QUEUES = 4;
-    const int time_quantum[NUM_QUEUES] = {4, 8, 12, 100};
-    const int time_allotment[NUM_QUEUES] = {8, 16, 48, INT_MAX}; 
-    const int RESET_PERIOD = 50;
+    const int NUM_QUEUES = 3;
+    const int time_quantum[NUM_QUEUES] = {1, 2, 3};
+    const int time_allotment[NUM_QUEUES] = {4, 6, 8}; 
+    const int RESET_PERIOD = 20;
 
     string padding = "";
 
@@ -113,7 +113,7 @@ int main() {
 
                 if (proc->remaining_time > 0) {
                     if (demote && i < NUM_QUEUES - 1) {
-                        proc->current_queue = i + 1; // Demote to next queue
+                        proc->current_queue = i + 1; 
                         queues[i + 1].push(proc);
                         cout << padding << DEMOTE << "| DEMOTE |  " << RESET << "Time " << time << ": Process " << proc->pid << " demoted to queue " << i + 2 << ".\n";
                     } else {
