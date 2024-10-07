@@ -29,9 +29,9 @@ bool arrivalTimeComparator(const Process& a, const Process& b) {
 }
 
 int main() {
-    const int NUM_QUEUES = 3;
-    const int time_quantum[NUM_QUEUES] = {1, 2, 3};
-    const int time_allotment[NUM_QUEUES] = {4, 6, 8}; 
+    const int NUM_QUEUES = 6;
+    const int time_quantum[NUM_QUEUES] = {1, 2, 3, 4, 5, 5};
+    const int time_allotment[NUM_QUEUES] = {2, 4, 6, 8, 20, INT_MAX}; 
     const int RESET_PERIOD = 20;
 
     string padding = "";
