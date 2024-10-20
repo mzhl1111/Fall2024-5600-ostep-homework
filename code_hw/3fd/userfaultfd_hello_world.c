@@ -46,6 +46,7 @@ static void *handler(void *arg)
     struct params *p = arg;
     long page_size = p->page_size;
     char buf[page_size];
+    memset(buf, 'a', sizeof(buf));
 
     for (;;) {
         struct uffd_msg msg;
@@ -123,7 +124,7 @@ int main(int argc, char **argv)
     pthread_t uffd_thread;
 
     page_size = get_page_size();
-    num_pages = 100000;
+    num_pages = 20;
 
     // open the userfault fd
     uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
@@ -193,11 +194,14 @@ int main(int argc, char **argv)
     // touch each page in the region
     int value;
     char *cur = region;
+    fprintf(stdout, "expected value: %d\n", (int)'a');
     for (long i = 0; i < num_pages; i++) {
         uint64_t start = getns();
-        int v = *((int*)cur);
+        char v = *((char*)cur);
         uint64_t dur = getns() - start;
         latencies[i] = dur;
+        v = *((char*)cur);
+        fprintf(stdout, "Modified page value: %d\n", v);
         value += v;
         cur += page_size;
     }
@@ -210,9 +214,13 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    for (long i = 0; i < num_pages; i++) {
-        fprintf(stdout, "%llu\n", (unsigned long long)latencies[i]);
+    long long sum = 0;
+    fprintf(stdout, "Frist mapping latency: %lld\n", (unsigned long long)latencies[0]);
+    for (long i = 1; i < num_pages; i++) {
+        sum += (unsigned long long)latencies[i];
     }
+    double average = (double)sum / num_pages;
+    fprintf(stdout, "Rest average latency: %.2f\n", average);
 
     free(latencies);
     munmap(region, page_size * num_pages);
