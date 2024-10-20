@@ -71,6 +71,10 @@ int main(int argc, char* argv[]) {
                     idMap.erase(it);
                 }
             }
+            for (auto b : manager->memoryList) {
+                cout << b.size << " ";
+            }
+            cout << endl;
         }
         manager->showMetrics();
         strategyIdMap[strategy] = idMap;

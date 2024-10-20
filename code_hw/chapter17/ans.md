@@ -30,6 +30,7 @@ Allocation Failures: 9
 Running simulation for strategy: worst
 
 --- Results ---
+
 Memory Used: 20%
 Free Memory: 800
 Largest Free Block: 354

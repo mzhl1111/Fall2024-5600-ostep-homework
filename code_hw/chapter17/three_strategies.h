@@ -18,7 +18,6 @@ class MemoryManager {
 private:
     int totalSize;           
     int lastId;              
-    list<Block> memoryList; 
     string strategy;    
 
     int allocationCount;
@@ -26,6 +25,7 @@ private:
     int allocationFailures;
 
 public:
+    list<Block> memoryList; 
     MemoryManager(int size, const string& strat);
 
     bool allocate(int size);
