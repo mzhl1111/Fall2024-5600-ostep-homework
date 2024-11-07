@@ -84,7 +84,7 @@ private:
     int NUM_PAGES;
     int NUM_FRAMES;
     int TLB_SIZE;
-    Statistics stat;
+    std::unordered_map<int, Statistics> stat;
 
     std::vector<Frame> physicalMemory;
     std::list<TLBEntry> TLB; // using list to simplify the LRU operation for TLB table
@@ -116,6 +116,7 @@ public:
 
     void printPageTable(int processID);
     void printMemoryMapping();
+    void printStat();
 
     std::unordered_map<int, PCB>& getProcesses();
 };

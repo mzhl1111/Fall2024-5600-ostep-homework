@@ -41,7 +41,7 @@ VMSimulator::VMSimulator(int pageSize, long long virtualMemSize, long long physi
     NUM_PAGES = VIRTUAL_MEMORY_SIZE / PAGE_SIZE + int((VIRTUAL_MEMORY_SIZE % PAGE_SIZE) > 0);
     NUM_FRAMES = PHYSICAL_MEMORY_SIZE / PAGE_SIZE;
     FreeFrames = NUM_FRAMES;
-    stat = Statistics();
+    stat = {};
     initializePhysicalMemory();
 }
 
@@ -76,6 +76,7 @@ bool VMSimulator::createProcess(int pid) {
     if (!this->allocateStackSegment(processes[pid], VMSimulator::STACK_SIZE)) {
         return false;
     }
+    stat[pid] = Statistics();
     return true;
 }
 
@@ -291,7 +292,7 @@ bool VMSimulator::accessMemory(int processID, long long virtualAddress, const st
 }
 
 PhysicalAddress VMSimulator::translateAddress(int processID, long long virtualAddress) {
-    stat.n_translate++;
+    stat[processID].n_translate++;
     auto it = processes.find(processID);
     if (it == processes.end()) {
         std::cerr << "Process " << processID << " not found." << std::endl;
@@ -310,7 +311,7 @@ PhysicalAddress VMSimulator::translateAddress(int processID, long long virtualAd
 
     for (auto tlbIt = TLB.begin(); tlbIt != TLB.end(); ++tlbIt) {
         if (tlbIt->pageNumber == pageNumber) {
-            stat.n_TLB_hit_count++;
+            stat[processID].n_TLB_hit_count++;
             int frameNumber = tlbIt->frameNumber;
             TLB.splice(TLB.begin(), TLB, tlbIt);
 
@@ -369,6 +370,17 @@ void VMSimulator::printMemoryMapping() {
                 std::cout << pid << "\t\t" << i << "\t\t" << pte.frameNumber << std::endl;
             }
         }
+    }
+}
+
+void VMSimulator::printStat(){
+    std::cout << "Process ID\t\\# translate\t\\# TLB hit\t TLB Hit Rate" << std::endl;
+    for (const auto &statPair : stat) {
+        int pid = statPair.first;
+        Statistics s = statPair.second;
+        float rate = (float)s.n_TLB_hit_count / (float)s.n_translate;
+        std::cout << pid << "\t\t" << s.n_translate << "\t\t" << s.n_TLB_hit_count;
+        std::cout <<"\t\t" << std::setprecision(4) << rate << std::endl;
     }
 }
 

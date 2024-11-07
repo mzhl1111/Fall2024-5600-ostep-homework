@@ -62,7 +62,7 @@ void processCommands(VMSimulator *simulator, std::string &filename) {
     }
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     int pageSize = 4096;
     long long virtualMemSize = (long long)0xffffffff;
     long long physicalMemSize = (virtualMemSize / 2 / pageSize) * pageSize;
@@ -70,13 +70,14 @@ int main() {
 
     auto simulator = new VMSimulator(pageSize, virtualMemSize, physicalMemSize, tlbSize);
 
-    std::string commandFile = "test_data.txt";
+    std::string commandFile = (argc < 2)? "test_data.txt": argv[1];
     processCommands(simulator, commandFile);
 
     for (auto pid : pidSet) {
         simulator->printPageTable(pid);
     }
     simulator->printMemoryMapping();
+    simulator->printStat();
 
     return 0;
 }
