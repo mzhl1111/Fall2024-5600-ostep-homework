@@ -9,17 +9,30 @@
 #include <sstream>
 #include <iomanip>
 
-// Bit masks for flags
 const unsigned int VALID_BIT = 0x1;
 const unsigned int READ_BIT = 0x2;
 const unsigned int WRITE_BIT = 0x4;
 
-// Address Structures
+struct Statistics {
+    int n_translate = 0;
+    int n_TLB_hit_count = 0;
+
+    Statistics() = default;
+};
+
+struct Segment {
+    int startPage;
+    int numPages;
+    int offset;
+    int reverse;
+};
+
 struct VirtualAddress {
     int pageNumber;
     int offset;
 
-    VirtualAddress(int address, int pageSize);
+    VirtualAddress(long long address, int pageSize);
+    VirtualAddress(int startPage, int numPage, int offset);
 };
 
 struct PhysicalAddress {
@@ -29,7 +42,6 @@ struct PhysicalAddress {
     PhysicalAddress(int frameNum, int offset);
 };
 
-// Frame Structure
 struct Frame {
     int frameNumber;
     bool isFree;
@@ -37,81 +49,76 @@ struct Frame {
     Frame(int num);
 };
 
-// Page Table Entry Structure with Bit Manipulation
 struct PageTableEntry {
     int frameNumber;
-    unsigned int flags; // Valid and protection bits
+    unsigned int flags;
 
     PageTableEntry();
 };
 
-// TLB Entry Structure
 struct TLBEntry {
     int pageNumber;
     int frameNumber;
+    // TODO: CONTROL BITS 
 
     TLBEntry(int pageNum, int frameNum);
 };
 
-// Segment Structure
-struct Segment {
-    int startPage;
-    int numPages;
-};
-
-// Process Control Block (PCB)
 struct PCB {
     int processID;
-    std::vector<PageTableEntry> pageTable;
+    std::vector<PageTableEntry> pageTablePtr; // PCB only have ptr to page table, to simplify, directly store page table info here
 
     Segment codeSegment;
     Segment stackSegment;
     Segment heapSegment;
 
+    PCB();
     PCB(int pid, int numPages);
 };
 
 class VMSimulator {
 private:
     int PAGE_SIZE;
-    int VIRTUAL_MEMORY_SIZE;
-    int PHYSICAL_MEMORY_SIZE;
+    long long VIRTUAL_MEMORY_SIZE;
+    long long PHYSICAL_MEMORY_SIZE;
     int NUM_PAGES;
     int NUM_FRAMES;
     int TLB_SIZE;
+    Statistics stat;
 
     std::vector<Frame> physicalMemory;
-    std::list<TLBEntry> TLB;
+    std::list<TLBEntry> TLB; // using list to simplify the LRU operation for TLB table
     std::unordered_map<int, PCB> processes;
-    int nextProcessID;
 
-    // Helper methods
+    int FreeFrames;
+
     void initializePhysicalMemory();
-    int allocatePages(PCB &pcb, int numPagesNeeded, unsigned int protectionFlags);
+    int allocatePages(PCB &pcb, int numPagesNeeded, unsigned int protectionFlags, bool reversed);
     void setFlag(unsigned int &flags, unsigned int mask);
     void clearFlag(unsigned int &flags, unsigned int mask);
     bool checkFlag(unsigned int flags, unsigned int mask);
+    bool allocateCodeSegment(PCB &pcb, int size);
+    bool allocateStackSegment(PCB &pcb, int size);
 
 public:
-    VMSimulator(int pageSize, int virtualMemSize, int physicalMemSize, int tlbSize);
+    inline static int CODE_SIZE = 4194304; // 4 * 1024 * 1024
+    inline static int STACK_SIZE = 4194304; 
+    VMSimulator(int pageSize, long long virtualMemSize, long long physicalMemSize, int tlbSize);
 
-    int createProcess();
-    void allocateCodeSegment(PCB &pcb, int size);
-    void allocateStackSegment(PCB &pcb, int size);
-    void allocateHeapSegment(PCB &pcb, int size);
+    bool createProcess(int pid);
 
     bool allocateHeapMemory(int processID, unsigned int size);
-    bool freeHeapMemory(int processID, unsigned int virtualAddress);
-    bool accessMemory(int processID, unsigned int virtualAddress, const std::string &segment);
+    bool freeHeapMemory(int processID, unsigned int size);
+    bool accessMemory(int processID, long long virtualAddress, const std::string &segment);
 
-    void freeMemory(int processID, int virtualAddress, int size);
-    PhysicalAddress translateAddress(int processID, int virtualAddress);
+    PhysicalAddress translateAddress(int processID, long long virtualAddress);
+    void contextSwitch();
 
     void printPageTable(int processID);
     void printMemoryMapping();
 
-    // For accessing processes map in main (optional)
     std::unordered_map<int, PCB>& getProcesses();
 };
+
 
 #endif
