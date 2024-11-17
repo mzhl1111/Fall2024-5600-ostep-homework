@@ -364,7 +364,7 @@ void VMSimulator::printMemoryMapping() {
     for (const auto &processPair : processes) {
         int pid = processPair.first;
         const PCB &pcb = processPair.second;
-        for (int i = 0; i < NUM_PAGES; ++i) {
+        for (int i = 0; i < NUM_PAGES; ++i) {p
             const PageTableEntry &pte = pcb.pageTablePtr[i];
             if (checkFlag(pte.flags, VALID_BIT)) {
                 std::cout << pid << "\t\t" << i << "\t\t" << pte.frameNumber << std::endl;
