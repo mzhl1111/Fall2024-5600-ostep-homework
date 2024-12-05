@@ -1,0 +1,10 @@
+/Users/muzhouliu/Desktop/NEU/5600/Fall2024-5600-ostep-homework/project/rust/rust_smol/target/debug/deps/libfutures_lite-0ed698418e35f471.rmeta: /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/lib.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/future.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/prelude.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/stream.rs
+
+/Users/muzhouliu/Desktop/NEU/5600/Fall2024-5600-ostep-homework/project/rust/rust_smol/target/debug/deps/libfutures_lite-0ed698418e35f471.rlib: /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/lib.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/future.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/prelude.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/stream.rs
+
+/Users/muzhouliu/Desktop/NEU/5600/Fall2024-5600-ostep-homework/project/rust/rust_smol/target/debug/deps/futures_lite-0ed698418e35f471.d: /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/lib.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/future.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/prelude.rs /Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/stream.rs
+
+/Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/lib.rs:
+/Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/future.rs:
+/Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/prelude.rs:
+/Users/muzhouliu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-lite-2.5.0/src/stream.rs:

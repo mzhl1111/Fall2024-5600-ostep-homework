@@ -4,7 +4,10 @@
 	"name": "C++",
 	"build": {
 		"dockerfile": "Dockerfile"
-	}
+	},
+	"runArgs": [
+		"--cpus", "4.0"
+	  ]
 
 
 	// Features to add to the dev container. More info: https://containers.dev/features.

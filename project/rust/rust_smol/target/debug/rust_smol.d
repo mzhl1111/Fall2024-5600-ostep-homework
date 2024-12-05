@@ -1,0 +1,1 @@
+/Users/muzhouliu/Desktop/NEU/5600/Fall2024-5600-ostep-homework/project/rust/rust_smol/target/debug/rust_smol: /Users/muzhouliu/Desktop/NEU/5600/Fall2024-5600-ostep-homework/project/rust/rust_smol/src/main.rs
